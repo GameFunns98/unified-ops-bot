@@ -1,0 +1,19 @@
+name: Task
+description: Technicky ukol
+title: "[Task]: "
+labels: ["enhancement"]
+body:
+  - type: input
+    id: module
+    attributes:
+      label: Modul
+      placeholder: bot / worker / queue / docs / infra
+    validations:
+      required: true
+
+  - type: textarea
+    id: task
+    attributes:
+      label: Zadani
+    validations:
+      required: true

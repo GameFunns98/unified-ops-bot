@@ -1,0 +1,26 @@
+name: Feature request
+description: Navrh nove funkce
+title: "[Feature]: "
+labels: ["feature"]
+body:
+  - type: input
+    id: module
+    attributes:
+      label: Modul
+      placeholder: bot / worker / queue / config / infra
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Reseni
+    validations:
+      required: true

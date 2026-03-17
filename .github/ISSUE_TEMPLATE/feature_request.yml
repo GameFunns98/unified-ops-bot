@@ -7,17 +7,9 @@ body:
     id: module
     attributes:
       label: Modul
-      placeholder: bot / worker / queue / config / infra
+      placeholder: bot / worker / queue / infra
     validations:
       required: true
-
-  - type: textarea
-    id: problem
-    attributes:
-      label: Problem
-    validations:
-      required: true
-
   - type: textarea
     id: solution
     attributes:

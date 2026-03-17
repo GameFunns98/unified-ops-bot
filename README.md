@@ -17,11 +17,6 @@ Discord bot a worker vrstva pro Unified Ops.
 - Redis
 
 ## Local setup
-1. `npm install`
-2. zkopiruj `.env.example` na `.env`
-3. `npm run dev`
-
-## Docs
-- `docs/architecture.md`
-- `docs/deployment.md`
-- `docs/jobs.md`
+1. npm install
+2. zkopiruj .env.example na .env
+3. npm run dev

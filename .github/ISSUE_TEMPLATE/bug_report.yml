@@ -9,17 +9,3 @@ body:
       label: Popis
     validations:
       required: true
-
-  - type: textarea
-    id: steps
-    attributes:
-      label: Kroky k reprodukci
-    validations:
-      required: true
-
-  - type: textarea
-    id: expected
-    attributes:
-      label: Ocekavane chovani
-    validations:
-      required: true

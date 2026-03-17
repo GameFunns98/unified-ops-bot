@@ -11,7 +11,5 @@
 
 ## Checklist
 - [ ] build prosel
-- [ ] lint prosel
 - [ ] typy sedi
 - [ ] zadne tajne udaje v commitu
-- [ ] env zmeny jsou popsane

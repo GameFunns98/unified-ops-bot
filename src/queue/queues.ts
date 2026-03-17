@@ -1,10 +1,10 @@
 import { Queue } from "bullmq";
-import { redis } from "./connection";
+import { redisConnection } from "./connection";
 
 export const memberSyncQueue = new Queue("member-sync", {
-  connection: redis
+  connection: redisConnection
 });
 
 export const quotaQueue = new Queue("quota-check", {
-  connection: redis
+  connection: redisConnection
 });

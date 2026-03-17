@@ -1,5 +1,5 @@
 import { Worker } from "bullmq";
-import { redis } from "../queue/connection";
+import { redisConnection } from "../queue/connection";
 import { logger } from "../lib/logger";
 
 export function startQuotaWorker() {
@@ -9,7 +9,7 @@ export function startQuotaWorker() {
       logger.info("Processing quota job", job.id, job.data);
       return { ok: true };
     },
-    { connection: redis }
+    { connection: redisConnection }
   );
 
   worker.on("completed", (job) => {

@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { discordSyncJobTypes, type DiscordSyncJob } from "./types";
+import {
+  discordSyncJobTypes,
+  type DiscordSyncJob,
+  type DiscordSyncPayload,
+  type NicknameUpdatePayload,
+  type RoleSyncPayload
+} from "./types";
 
 const nicknameUpdatePayloadSchema = z.object({
   guildId: z.string().min(1),
@@ -17,15 +23,13 @@ const roleSyncPayloadSchema = z.object({
   reason: z.string().optional()
 });
 
-export function validateDiscordSyncJob(job: DiscordSyncJob) {
+export function validateDiscordSyncJob(job: DiscordSyncJob): DiscordSyncPayload {
   if (job.type === discordSyncJobTypes.NICKNAME_UPDATE) {
-    nicknameUpdatePayloadSchema.parse(job.payload);
-    return;
+    return nicknameUpdatePayloadSchema.parse(job.payload) as NicknameUpdatePayload;
   }
 
   if (job.type === discordSyncJobTypes.ROLE_SYNC) {
-    roleSyncPayloadSchema.parse(job.payload);
-    return;
+    return roleSyncPayloadSchema.parse(job.payload) as RoleSyncPayload;
   }
 
   throw new Error(`Unsupported discord sync job type: ${job.type}`);

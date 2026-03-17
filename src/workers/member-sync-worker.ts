@@ -12,7 +12,7 @@ import { validateDiscordSyncJob } from "../sync-jobs/validation";
 export function startMemberSyncWorker(client: Client) {
   let inFlight = false;
 
-  const timer = setInterval(async () => {
+  const poll = async () => {
     if (inFlight) {
       return;
     }
@@ -20,29 +20,36 @@ export function startMemberSyncWorker(client: Client) {
     inFlight = true;
 
     try {
+      logger.info("Polling for queued Discord sync jobs");
       const job = await claimNextQueuedDiscordSyncJob();
       if (!job) {
         return;
       }
 
-      logger.info("Processing Discord sync job", job.id, job.type);
+      logger.info("Picked Discord sync job", { id: job.id, type: job.type });
 
       try {
-        validateDiscordSyncJob(job);
-        const result = await executeDiscordSyncJob(client, job);
+        const validatedPayload = validateDiscordSyncJob(job);
+        const result = await executeDiscordSyncJob(client, job.type, validatedPayload);
         await markDiscordSyncJobCompleted(job.id, result);
-        logger.info("Discord sync job completed", job.id);
+        logger.info("Completed Discord sync job", { id: job.id, type: job.type });
       } catch (error) {
         const normalizedError = toError(error);
         await markDiscordSyncJobFailed(job.id, normalizedError, serializeError(error));
-        logger.error("Discord sync job failed", job.id, normalizedError.message);
+        logger.error("Failed Discord sync job", { id: job.id, type: job.type, error: normalizedError.message });
       }
     } catch (error) {
       logger.error("Failed while polling Discord sync jobs", error);
     } finally {
       inFlight = false;
     }
+  };
+
+  const timer = setInterval(() => {
+    void poll();
   }, env.DISCORD_SYNC_POLL_INTERVAL_MS);
+
+  void poll();
 
   logger.info("Member sync worker started", {
     pollIntervalMs: env.DISCORD_SYNC_POLL_INTERVAL_MS,

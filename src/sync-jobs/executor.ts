@@ -1,14 +1,14 @@
 import type { Client } from "discord.js";
-import { discordSyncJobTypes, type DiscordSyncJob, type NicknameUpdatePayload, type RoleSyncPayload } from "./types";
+import { discordSyncJobTypes, type DiscordSyncJobType, type NicknameUpdatePayload, type RoleSyncPayload } from "./types";
 
-export async function executeDiscordSyncJob(client: Client, job: DiscordSyncJob) {
-  switch (job.type) {
+export async function executeDiscordSyncJob(client: Client, jobType: DiscordSyncJobType, payload: NicknameUpdatePayload | RoleSyncPayload) {
+  switch (jobType) {
     case discordSyncJobTypes.NICKNAME_UPDATE:
-      return executeNicknameUpdate(client, job.payload as NicknameUpdatePayload);
+      return executeNicknameUpdate(client, payload as NicknameUpdatePayload);
     case discordSyncJobTypes.ROLE_SYNC:
-      return executeRoleSync(client, job.payload as RoleSyncPayload);
+      return executeRoleSync(client, payload as RoleSyncPayload);
     default:
-      throw new Error(`Unsupported discord sync job type: ${job.type}`);
+      throw new Error(`Unsupported discord sync job type: ${jobType}`);
   }
 }
 

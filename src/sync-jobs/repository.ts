@@ -23,13 +23,13 @@ export async function claimNextQueuedDiscordSyncJob(): Promise<DiscordSyncJob | 
     const query = `
       WITH next_job AS (
         SELECT id
-        FROM ${table}
+        FROM "${table}"
         WHERE status = 'QUEUED'
         ORDER BY created_at ASC
         FOR UPDATE SKIP LOCKED
         LIMIT 1
       )
-      UPDATE ${table} jobs
+      UPDATE "${table}" jobs
       SET
         status = 'IN_PROGRESS',
         started_at = NOW(),
@@ -66,7 +66,7 @@ export async function markDiscordSyncJobCompleted(jobId: string, result: unknown
 
   await postgres.query(
     `
-      UPDATE ${table}
+      UPDATE "${table}"
       SET
         status = 'COMPLETED',
         result = $2::jsonb,
@@ -85,7 +85,7 @@ export async function markDiscordSyncJobFailed(jobId: string, error: Error, deta
 
   await postgres.query(
     `
-      UPDATE ${table}
+      UPDATE "${table}"
       SET
         status = 'FAILED',
         error_message = $2,

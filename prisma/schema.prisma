@@ -1,0 +1,33 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum DiscordSyncJobStatus {
+  QUEUED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+model DiscordSyncJob {
+  id           String               @id @db.Uuid
+  status       DiscordSyncJobStatus
+  jobType      String               @map("job_type")
+  payload      Json
+  result       Json?
+  errorMessage String?              @map("error_message")
+  errorDetails Json?                @map("error_details")
+  attempts     Int                  @default(0)
+  startedAt    DateTime?            @map("started_at") @db.Timestamptz(6)
+  completedAt  DateTime?            @map("completed_at") @db.Timestamptz(6)
+  createdAt    DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("DiscordSyncJob")
+}

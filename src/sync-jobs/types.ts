@@ -35,5 +35,5 @@ export type DiscordSyncPayload = NicknameUpdatePayload | RoleSyncPayload;
 export type DiscordSyncJob = {
   id: string;
   type: DiscordSyncJobType;
-  payload: DiscordSyncPayload;
+  payload: unknown;
 };
